@@ -1,0 +1,23 @@
+---
+title: "Homework 4"
+author: "Adeline Shin"
+date: "11/19/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+# Uploading the Data
+```{r}
+# Upload the toenail df
+toenail_df = read.delim("./toenail.txt", header = TRUE, sep = " ", col.names = c("Subject ID", "Response", "Treatment", "Month", "Visit", "X1", "X2", "X3"))
+
+# Clean up toenail_df
+toenail_df =
+    toenail_df[, 1:5] %>% 
+    janitor::clean_names()
+```
+
