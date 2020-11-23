@@ -55,10 +55,13 @@ tab3 <- lapply(temp, function(z){table(z$response, z$treatment)})
 lapply(tab3, function(z){round(prop.table(z,margin = 1),2)})
 
 # Model
-model_lag_1 <- gee(response ~ treatment * response_1, corstr = "independence",family = binomial("logit"), id = subject_id, data = toenail_df)
+model_lag_1 <- gee(response ~ treatment * (response_1 + month), corstr = "independence",family = binomial("logit"), id = subject_id, data = toenail_df)
 round(summary(model_lag_1)$coeff,2)
+```
+The interaction term is insignificant according to the z-score, so we will use a model without the interaction term.
 
-model_lag_1b <- gee(response ~ treatment + response_1, corstr = "independence",family = binomial("logit"), id = subject_id, data = toenail_df)
+```{r}
+model_lag_1b <- gee(response ~ treatment + (response_1 + month), corstr = "independence",family = binomial("logit"), id = subject_id, data = toenail_df)
 round(summary(model_lag_1b)$coeff,2)
 ```
 
@@ -81,22 +84,20 @@ tab3 <- lapply(temp, function(z){table(z$response, z$treatment)})
 lapply(tab3, function(z){round(prop.table(z,margin = 1),2)})
 
 # Model
-model_lag_1 <- gee(response ~ treatment * response_1, corstr = "independence",family = binomial("logit"), id = subject_id, data = toenail_df)
-round(summary(model_lag_1)$coeff,2)
-
-model_lag_1b <- gee(response ~ treatment + response_1, corstr = "independence",family = binomial("logit"), id = subject_id, data = toenail_df)
+model_lag_1b <- gee(response ~ treatment + (response_1 + month), corstr = "independence",family = binomial("logit"), id = subject_id, data = toenail_df)
 round(summary(model_lag_1b)$coeff,2)
 ```
 
 ## Part 3
 The following interpretations can be made for the coefficients in the first-order transition model: 
 
-* Intercept: -3.41 is the log odds of having moderate or severe onycholysis for those who had no treatment and did not have moderate or severe onycholysis in the previous visit.
-* treatment: -0.84 is the log odds ratio of respiratory infection comapring those with and without moderate or severe onycholysis who had an identical treatment status in the previous visit.
-* response_1: 4.33 is the log odds ratio of moderate or severe onycholysis comparing those with and without treatment in their previous visit who currently have an identical status for moderate or severe onycholysis.
+* Intercept: -3.01 is the log odds of having moderate or severe onycholysis for those who had no treatment and did not have moderate or severe onycholysis in the previous month
+* treatment_1: -0.31 is the log odds ratio of respiratory infection comapring those with and without moderate or severe onycholysis who had an identical treatment status in the previous month.
+* response_1: 4.49 is the log odds ratio of moderate or severe onycholysis comparing those with and without treatment in the previous month who currently have an identical status for moderate or severe onycholysis.
+* month: -0.12 is the log odds ratio of moderate or severe onycholysis with an increase in month for those who have an identical status for moderate or severe onycholysis.
 
 ## Part 4
-The interpretations from the transition model differ from the ones in HW 2 and HW 3 because they compare the current status to the status at the previous visit, while the previous models (GEE and mixed effects) do not account for the direct previous visit.
+The interpretations from the transition model differ from the ones in HW 2 and HW 3 because they compare the current status to the status at the previous month, while the previous models (GEE and mixed effects) do not account for the direct previous month
 
 # Question 2
 ## Setup
